@@ -1,0 +1,75 @@
+### 1. Come gestire la Release per il Negozio (Eseguibile + DLL)
+
+Quando compili il tuo progetto in C++/Qt in modalità **Release**, l'eseguibile generato non può girare da solo su un altro computer (come quello del negozio) senza le librerie dinamiche (DLL) di Qt e del compilatore MinGW/MSVC.
+
+Per raccogliere e impacchettare tutto senza dover cercare le DLL manualmente:
+
+#### Il comando `windeployqt`
+
+Qt fornisce uno strumento automatico chiamato **`windeployqt`** che analizza il tuo `.exe`, individua quali moduli usi (GUI, Widgets, Core, Network) e copia automaticamente tutte le DLL e le cartelle dei plugin (come `platforms/qwindows.dll`) nella cartella di destinazione.
+
+1. Apri il terminale del tuo ambiente Qt (es. **MinGW / MSVC Command Prompt** dal menu Start).
+2. Spostati nella cartella dove è stato generato il file `.exe` della Release:
+```bash
+cd C:\percorso\della\tua\build-Release\release
+
+```
+
+
+3. Esegui il comando passando il nome del tuo eseguibile:
+```bash
+windeployqt shiftplanner.exe
+
+```
+
+
+4. `windeployqt` popolerà la cartella con tutte le DLL necessarie.
+
+#### Come distribuirlo al negozio:
+
+* **In formato ZIP / Standalone (Portable):** Ti basta zippare l'intera cartella contenente l'`.exe` e tutte le DLL create da `windeployqt`. Sul PC del negozio estrai lo ZIP in una cartella qualunque (es. sul Desktop o in `C:\ShiftPlanner`) ed crei un collegamento all'`.exe`. Non serve alcuna installazione.
+* **Con un Installer (Inno Setup / NSIS):** Se vuoi un installer `.exe` professionale che crei l'icona sul desktop e nel menu Start, puoi usare uno strumento gratuito come **Inno Setup**. Gli indichi la cartella pronta popolata da `windeployqt` e genererà un singolo file `ShiftPlanner_Setup.exe`.
+
+---
+
+### 2. GitHub per Portfolio: È obbligatorio mostrare i sorgenti?
+
+**No, non sei obbligato a rendere i sorgenti pubblici o Open Source per usare GitHub come portfolio.**
+
+GitHub ti offre diverse opzioni di configurazione per gestire la visibilità e la licenza del tuo progetto:
+
+#### A. Repository Pubblica ma con Licenza Proprietaria / Closed Source
+
+Puoi rendere la repository **pubblica** (così da mostrare la qualità del codice C++, l'architettura Qt e l'uso dei pattern), ma inserire un file `LICENSE` con una licenza di tipo **Proprietario / All Rights Reserved** (o "No License").
+
+* **Cosa significa:** Il codice è visibile a reclutatori o aziende per valutare le tue competenze, ma nessuno ha il diritto legale di copiare, modificare o ridistribuire il tuo software per fini commerciali senza il tuo permesso.
+
+#### B. Repository Pubblica limitata alle "Releases" (Senza sorgenti visibili)
+
+Se vuoi proteggere completamente la proprietà intellettuale del tuo codice per il negozio ed evitare che il codice sorgente sia visibile online, puoi:
+
+1. Creare una repository **Privata** dove tieni il codice sorgente C++.
+2. Creare una repository **Pubblica "Portfolio"** dove carichi solo:
+* Un file **`README.md`** curato nei dettagli, completo di screenshot, GIF dell'applicazione in funzione, spiegazione dell'architettura (es. Qt, C++17, Signal/Slot, JSON serialization, custom delegates) e delle tecnologie usate.
+* La sezione **Releases**, dove alleghi direttamente il file `.zip` dell'eseguibile già compilato pronto da scaricare ed eseguire.
+
+
+
+#### C. Repository Privata con Invito (Per colloqui mirati)
+
+Puoi mantenere il progetto **Privato** e invitare specifici recensori o selezionatori fornendo loro un accesso temporaneo in lettura tramite il loro username GitHub.
+
+---
+
+### Come strutturare il Repository per il massimo impatto nel Portfolio
+
+Un selezionatore o un lead developer spende solitamente meno di 2 minuti per valutare un progetto su GitHub. Se decidi di rendere il codice pubblico per il portfolio:
+
+1. **Scrivi un `README.md` visivamente d'impatto:**
+* **Screenshot/GIF demo:** Mostra subito la tab dei turni, il calcolo delle ore e l'interfaccia.
+* **Caratteristiche chiave:** Gestione dipendenti, turni continuati/spezzati, esportazione, performance della tabella.
+* **Architettura tecnica:** Menzione dell'uso di Qt Widgets, custom `QStyledItemDelegate`, C++ STL e gestione dati.
+
+
+2. **Ignora i file di build (`.gitignore`):**
+* Assicurati di includere un `.gitignore` specifico per Qt/C++ in modo da **non caricare mai** file temporanei di compilazione (come `.o`, `.obj`, `Makefile`, `ui_*.h`, o le cartelle `build-`). Il repository deve contenere solo i file sorgente `.cpp`, `.h`, `.ui`, `.qrc` e il file di progetto `.pro` / `CMakeLists.txt`.

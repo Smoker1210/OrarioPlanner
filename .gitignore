@@ -1,0 +1,20 @@
+# Cartelle e impostazioni IDE
+.qtc_clangd/
+.qtcreator/
+.vscode/
+*.user
+*.user.*
+
+# Cartelle e file di Build / Binari
+build/
+debug/
+release/
+v1.0.0.0/
+.qmake.stash
+
+# File generati da QMake / Make
+Makefile*
+
+# Appunti personali e bozze grafiche (opzionale)
+*.paint
+idee.txt

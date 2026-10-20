@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/html/helpPage.html</file>
+        <file>resources/leftPanel/magnifying_glass.png</file>
+        <file>resources/icon/calendar.ico</file>
+        <file>resources/icon/calendar.png</file>
+    </qresource>
+</RCC>

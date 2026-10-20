@@ -1,0 +1,111 @@
+<h1>Guida all'uso di OrarioPlanner</h1>
+<p>
+    L'applicazione permette di pianificare la copertura oraria settimanale del punto vendita garantendo il rispetto dei vincoli aziendali rendendo
+    inoltre automatiche operazioni di calcolo ripetitive. L'interfaccia presenta 3 schermate principali con cui familiarizzare.
+</p>
+<h2>La tabella oraria</h2>
+<p>
+    Schermata principale del programma su cui effettivamente si creano i turni dei dipendenti. <br> I turni vengono visualizzati tramite tabella sinottica,
+    la prima colonna sinistra presenta i nomi dei dipendenti mentre la prima riga sono i giorni della settimana, ogni cella rappresenta il turno che il
+    dipendente farà nel giorno corrispondente. <br> Per creare un turno si inizia facendo doppio click sulla cella che si vuole modificare, una volta terminata la modifica
+    si procede premendo il tasto Enter o effettuando click da qualsiasi altra parte fuori dalla cella in modifica. <br>
+    Ho reso possibile navigare la tabella con le freccette e tramite enter si possono modificare i singoli turni, permettendo di fare gli orari anche senza alzare le mani dalla tastiera.
+    <br> Ogni turno contribuisce ad aumentare il contatore di ore
+    del dipendente (posto nell'ultima colonna di destra sotto voce "tot ore"), è <b>essenziale</b> che vengano rispettati alcuni criteri di formattazione perché il turno venga
+    correttamente conteggiato a livello di ore poiché un inserimento errato può rendere la cella vuota o comunque mandare il conteggio del turno a 0 ore (non contribuendo al contatore totale).<br>
+    I criteri di formattazione sono i seguenti:
+    <ul>
+        <li>Turno continuato: due numeri separati da uno spazio, esempio: 9 13</li>
+        <li>Turno spezzato: la combinazione di due turni continuati però tra di loro deve trovarsi uno slash /, esempio: 9 13 / 16 20</li>
+        <li>Riposo: semplicemente la lettera R</li>
+        <li>Malattia: semplicemente la lettera M</li>
+        <li>Legge 104: semplicemente la stringa 104</li>
+        <li>Corso: semplicemente la stringa CORSO</li>
+        <li>Assenza generica: si usa un semplice trattino -, può anche essere impostato a seguito di formattazione errata inserita dall'utente oppure se la cella viene lasciata vuota</li>
+    </ul>
+    E' da notare che la formattazione che viene usata durante la modifica della cella non rispecchia la formattazione che si vedrà nella cella successivamente, questo per dire
+    che un turno spezzato sebbene venga inserito usando lo slash nella cella finalizzata non si vedrà alcuno slash, come anche per
+    un'assenza generica viene usato il trattino ma viene trasformata in uno slash / (questo per migliorare la leggibilità)<br>
+    L'assenza di tipo Ferie non è stata impostata per motivo banale di cui parlerò nel prossimo paragrafo. La creazione dei turni viene ulteriormente facilitata dal pannello sinistro
+    che permette di visualizzare redditività, incasso previsto, ore suggerite e ore impiegate nell'orario. <br>
+    N.B: Come ben sappiamo una pausa di mezz'ora è obbligatoria una volta passate le 7 ore di turno quindi per turni continuati con totale ore maggiore uguale a 7 ore viene automaticamente
+    rimossa mezz'ora dalla somma totale.<br>
+    Subito sotto la tabella possiamo trovare la casella di testo per eventuali note (alcuni suggerimenti d'uso sono per segnalare trasferte temporanee, passaggi di chiavi o visite mediche).
+    <br>Alla destra delle note invece troviamo il tasto che permette di esportare tutta la tabella Oraria in un PDF, dal file in formato PDF è possibile effettuare la stampa così da poter
+    avere gli orari fisicamente su un foglio.
+</p>
+<h2>Schermata Dipendenti</h2>
+<p>
+    Questa schermata è essenziale per gestire i dipendenti assegnati al negozio e ne permette la creazione, modifica o rimozione.<br>
+    Un dipendente fondamentalmente ha come informazioni Nome, Cognome, Ore contrattuali, ruolo e se è appartenente alla categoria protetta. Parte maggiore della schermata viene
+    occupata dalla lista dei dipendenti salvati in memoria, per ogni riga a partire da sinistra abbiamo come primo elemento una casella spuntabile che indica
+    se il dipendente è attivo o meno nel negozio.<br><b>Ma cosa vuol dire attivo?</b>
+    Per attivo si intende che viene concretamente visualizzato all'interno della tabella degli orari, un dipendente può essere "disattivato" per diversi motivi ma principalmente
+    è utile come impostazione nel caso qualcuno vada in ferie. Lo scopo della schermata dipendenti è che permette di avere moltissimi individui salvati e non si è costretti
+    a cancellare chiunque venga spostato dal negozio e anzi si può mantenere memoria delle sue informazioni e riutilizzarle nel caso ritorni a lavorarci. A destra della lista si trovano
+    pulsanti piuttosto intuitivi, la modifica o la cancellazione di un dipendente diventano disponibili solo dopo averlo selezionato nella lista.<br> La creazione o modifica una volta premuti
+    fanno apparire un'interfaccia di creazione in alto a destra della schermata, è obbligatorio per il nuovo dipendente avere sia un nome e cognome che un ruolo, le ore invece possono
+    essere 0 (dubbia utilità), una volta che un dipendente viene creato si può subito visualizzarlo sia nella tabella orari che nella lista della schermata dipendenti.<br>
+    E' possibile indicare un dipendente come appartenente alla categoria protetta, come ben noto da politica aziendale questi dipendenti contano nel monte ore settimanale
+    come la metà (quindi lavorando 24 ore in realtà conteggiano come 12), questa funzione viene automaticamente implementata nel contatore ore quindi non c'è da preoccuparsene nei calcoli.
+</p>
+<h2>Schermata Impostazioni</h2>
+<p>
+    La schermata impostazioni permette di configurare gli orari di apertura e chiusura del negozio per giorno settimanale oltre a consentire la modifica dei valori di incasso
+    e ore suggerite per la settimana.
+    Dopo una modifica è importante salvare le modifiche fatte con il tasto in basso a sinistra.<br>
+    <b>ATTENZIONE</b>: Gli orari del negozio è giusto siano configurati in maniera corretta poiché sono essenziali per il buon funzionamento del controllo integrità della tabella oraria
+    (Maggiori informazioni al paragrafo successivo).
+</p>
+<h3>Pannello Sinistro</h3>
+<p>
+    Il pannello sinistro aiuta a compilare gli orari mostrando il totale di ore utilizzate e valori di redditività, ore suggerite e incasso (inseriti dall'utente).<br>
+    Tra le informazioni presenti ci sono l'anno e il numero della settimana di riferimento della tabella che si sta modificando, è bene notare che il numero della settimana
+    viene calcolato automaticamente alla creazione di una nuova tabella e consiste nella settimana <b>successiva</b> a quella in cui la tabella è stata creata
+    (per capirci creando una nuova tabella oraria durante la settimana 41 verrà assegnata a questa nuova tabella come riferimento la settimana 42), rimane comunque possibile nelle impostazioni
+    modificare il numero della settimana per eventuali errori di natura ignota. Riferendosi sempre al numero di settimana nella prima
+    riga di testa della tabella oraria verranno inoltre segnati il numero e il mese dei singoli giorni della settimana.<br>
+    Sotto le informazioni generali dell'orario c'è uno spazio riservato al dettaglio dei dipendenti, essenzialmente scorrendo la tabella degli orari e passando sulle righe
+    in questo spazio viene mostrato, in corrispondenza della riga corrente, i dettagli del dipendente focalizzato, torna utile per vedere quante ore gli mancano da fare rispetto
+    a quelle contrattuali.<br>
+    Infine si trova il tasto di controllo integrità della tabella, premendolo si effettua una validazione oraria scandita su tutti i giorni in base a delle regole precise che sono:
+    <ul>
+        <li><b>Dipendenti Minimi</b>: si controlla che in ogni mezz'ora siano presenti almeno 2 persone (evitando situazioni in cui il negozio ha una sola persona in turno)</li>
+        <li><b>Chiusura con personale autorizzato</b>: si controlla che la chiusura abbia almeno un responsabile o un viceresponsabile presente</li>
+    </ul>
+    Una volta premuto il tasto si può visualizzare, subito sotto il pulsante, l'esito della validazione della tabella:
+    <ul>
+        <li><div style='color: #00d80a;'>Regolare</div>: la tabella non presenta anomalie</li>
+        <li><div style='color: #ffd400;'>In attesa di verifica</div>: stato tabella ignoto, lo stato diventa ignoto ad ogni modifica che comporta un cambiamento delle ore totali (come l'aggiunta di un turno),
+        è necessario quindi effettuare un nuovo controllo d'integrità</li>
+        <li><div style='color: #e80000;'>Errore integrità</div>: un'anomalia è stata trovata, viene segnato il giorno critico di rosso nella tabella e sotto l'indicatore di stato si hanno informazioni aggiuntive
+        quali il tipo di anomalia, il giorno e dove disponibile la mezz'ora anomala.</li>
+    </ul>
+    Possono essere trovate più anomalie durante un singolo giorno e l'ora di riferimento che viene indicata nel pannello a sinistra è da considerarsi
+    come intervallo della mezz'ora successiva, quindi ad esempio per un'anomalia segnalata alle 20 il problema risiederà nell'intervallo 20-20.30.<br>
+    Sotto il tasto di controllo integrità è presente il tasto "resetta stato" la sua unica utilità è di annullare una precedente verifica che ha avuto riscontro di anomalie,
+    può essere utile qualora si abbia premuto erroneamente il tasto di controllo e non si voglia avere la tabella dipinta di rosso. <br>
+    In fondo al pannello sinistro si hanno i tasti per accedere alla schermata dipendenti e impostazioni.
+</p>
+<h3>Note sull'esportazione e la gestione dei file</h3>
+<p>
+    Il programma si aggancia principalmente al file "orario_settimanale.json" (lo si trova in AppData/Roaming/OrarioPlanner per i pochi a cui interessa)
+    per mantenere memoria di tutte le informazioni essenziali della settimana corrente, qualora
+    si vada a creare un file nuovo questo file principale viene svuotato di alcune di queste informazioni pertanto se si desidera salvare una delle tabelle orarie di settimane
+    precedenti è necessario usare il menu a tendina in alto e premere il tasto "Esporta JSON", subito dopo la pressione si apre una schermata di navigazione delle cartelle
+    che permette di salvare dove si vuole la tabella oraria corrente con nome impostabile. Tengo a far notare che i file degli orari contengono anche tutte le informazioni
+    degli orari del punto vendita (oltre che ore suggerite, incasso e dipendenti al momento del salvataggio), per aprire un foglio orari vecchio è sufficiente
+    premere il tasto "Apri" sempre tramite menu a tendina posto in alto.
+</p>
+<h3>Aggiornamenti</h3>
+<p>
+    Ho intenzione di mantenere aggiornata l'applicazione (fintanto ne vedo il senso) con il rilascio di nuove funzionalità ad ogni nuova versione, sebbene pianificassi di
+    permettere l'aggiornamento da remoto mi è sfortunatamente reso quasi impossibile dai server aziendali, di conseguenza l'unico modo rimanente
+    per passare ad una nuova versione resta chiedermi personalmente il setup aggiornato (lascio l'indirizzo email in basso).
+</p>
+<h3>Contatti</h3>
+<p>
+    Il programma è stato sviluppato per puro scopo edonistico (quindi risulta normale trovare bug) oltre che per aiutare concretamente un'operazione rognosa come la creazione di orari.<br>
+    Per qualsiasi segnalazione di problemi o consigli per aggiunte resto disponibile alla casella di posta:
+    <a href="mailto:samuele.gobbi3@gmail.com">samuele.gobbi3@gmail.com</a>
+</p>
