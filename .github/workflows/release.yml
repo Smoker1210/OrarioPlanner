@@ -12,6 +12,12 @@ jobs:
     steps:
       - name: Checkout del codice
         uses: actions/checkout@v4
+      - name: Cache Qt
+        id: cache-qt
+        uses: actions/cache@v3
+        with:
+          path: ${{ runner.temp }}/Qt
+          key: ${{ runner.os }}-Qt-5.15.2-msvc2019_64
 
       # 1. Configura Qt 5.15
       - name: Install Qt 5.15.2

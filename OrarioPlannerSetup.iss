@@ -60,17 +60,18 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "{#AppIcon}"; DestDir: "{app}"; Flags: ignoreversion
 
 ; 2. Copia del contenuto della ReleaseApp (incluso OrarioPlanner.exe e tutte le DLL)
-Source: "{#SourceFolder}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.obj, *.cpp.obj, *.h.obj, *.moc, *.o"
+Source: "{#SourceFolder}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.obj, *.cpp.obj, *.h.obj, *.moc, *.o, moc_*.cpp, qrc_*.cpp, *.res, vc_redist*.exe"
 
 [Icons]
 ; Menu Start
-Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\{#AppIcon}"
-
+;Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\{#AppIcon}"
+Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\app_icon.ico"; IconIndex: 0
 ; Disinstallatore
+;Name: "{autoprograms}\Disinstalla {#MyAppName}"; Filename: "{uninstallexe}"
 Name: "{autoprograms}\Disinstalla {#MyAppName}"; Filename: "{uninstallexe}"
-
 ; Desktop
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\{#AppIcon}"; Tasks: desktopicon
+;Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\{#AppIcon}"; Tasks: desktopicon
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\app_icon.ico"; IconIndex: 0; Tasks: desktopicon
 
 [Run]
 ; Avvio dell'applicazione al termine dell'installazione
