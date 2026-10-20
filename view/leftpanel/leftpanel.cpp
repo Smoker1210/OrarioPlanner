@@ -53,7 +53,7 @@ leftpanel::leftpanel(QWidget *parent): QWidget{parent}{
     QFormLayout* integrityCheck = new QFormLayout();
     integrityCheck->setContentsMargins(10,0,10,0);
     status = new QLabel("In attesa di verifica...", this);
-    status->setStyleSheet("color: #ffd400;");
+    status->setStyleSheet(QString("color: %1;").arg(hexAttesaVerifica));
     integrityCheck->addRow("Stato tabella: ", status);
     casellaErrori = new QTextBrowser();
     casellaErrori->setFrameShape(QAbstractScrollArea::Shape::NoFrame);
@@ -79,11 +79,11 @@ leftpanel::leftpanel(QWidget *parent): QWidget{parent}{
     connect(casellaErrori, &QTextBrowser::textChanged, this, [this](){
         if(!this->casellaErrori->toPlainText().isEmpty()){
             status->setText("Errore integrità");
-            status->setStyleSheet("color: #e80000;");
+            status->setStyleSheet(QString("color: %1;").arg(hexErrore));
         }
         else{
             status->setText("Regolare");
-            status->setStyleSheet("color: #00d80a;");
+            status->setStyleSheet(QString("color: %1;").arg(hexRegolare));
             emit this->cleanCriticalDay();
         }
     });
@@ -208,6 +208,6 @@ void leftpanel::checkErrorList(){
 
 void leftpanel::refreshIntegrityCheck(){
     status->setText("In attesa di verifica...");
-    status->setStyleSheet("color: #ffd400;");
+    status->setStyleSheet(QString("color: %1;").arg(hexAttesaVerifica));
 }
 }

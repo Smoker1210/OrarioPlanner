@@ -55,6 +55,8 @@ namespace shiftplanner{
                 return "Riposo";
             case shift::Tipo::Corso:
                 return "Corso";
+            case shift::Tipo::Trasferta:
+                return "Trasferta";
             default:
                 return "Assente";
         }
@@ -72,7 +74,7 @@ namespace shiftplanner{
         testoGrezzo = testo;
         intervalli = {{inizio1, fine1}, {inizio2, fine2}};
     }
-    //l'assenza può essere per tipo riposo, malattia, assente, l104 o corso
+    //l'assenza può essere per tipo riposo, malattia, assente, l104, corso o trasferta
     void shift::setAssenza(Tipo tipoAssenza, const std::string& testo){
         tipoGiorno = tipoAssenza;
         testoGrezzo = testo;
@@ -103,6 +105,10 @@ namespace shiftplanner{
         }
         if (cleanText == "CORSO"){
             result.setAssenza(Tipo::Corso, cleanText);
+            return result;
+        }
+        if (cleanText.length()>2 && cleanText.substr(0,2) == "T:"){
+            result.setAssenza(Tipo::Trasferta, cleanText);
             return result;
         }
         //nel caso non sia un giorno di assenza allora gestisco il caso per lo spezzato o per il continuato

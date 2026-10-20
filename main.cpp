@@ -17,7 +17,6 @@ int main(int argc, char *argv[]){
     if (translator.load(locale, "qtbase", "_", trPath)) {
         app.installTranslator(&translator);
     }
-    app.setWindowIcon(QIcon(":/resources/icon/calendar.png"));
     QCoreApplication::setApplicationName("OrarioPlanner");
     GUI::MainWindow mainwindow;
     mainwindow.showMaximized();

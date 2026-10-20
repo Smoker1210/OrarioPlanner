@@ -83,6 +83,35 @@ namespace shiftplanner{
             }
             return {0,0, false};
         }
+        void cleanBloccoOrari(std::string& orario){
+            std::stringstream ss(orario);
+            std::string blocco, risultato;
+
+            while (ss >> orario) {
+                cleanBlocco(blocco);
+                if (!risultato.empty()) risultato += " ";
+                risultato += orario;
+            }
+
+            blocco = risultato;
+        }
+        void cleanBlocco(std::string& blocco){
+            try{
+                size_t sep = blocco.find_first_of(".:");
+                if (sep != std::string::npos) {
+                    std::string parteMinuti = blocco.substr(sep + 1);
+                    if (parteMinuti.empty() || parteMinuti == "0" || parteMinuti == "00") {
+                        blocco = blocco.substr(0, sep); // Tiene solo la parte delle ore
+                    }
+                }
+            }
+            catch (const std::invalid_argument&){
+                return;
+            }
+            catch (const std::out_of_range&){
+                return;
+            }
+        }
         std::string minutiToOraString(unsigned int minutiTotali){
             int ore = minutiTotali/60;
             int minuti = minutiTotali%60;

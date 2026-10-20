@@ -22,7 +22,7 @@ VS_VERSION_INFO VERSIONINFO
 				VALUE "CompanyName", "Samuele Gobbi\0"
 				VALUE "FileDescription", "Pianificazione e Gestione dei Turni Aziendali\0"
 				VALUE "FileVersion", "1.0.0.0\0"
-				VALUE "LegalCopyright", "Copyright Â© 2026\0"
+				VALUE "LegalCopyright", "Copyright (C) 2026\0"
 				VALUE "OriginalFilename", "OrarioPlanner.exe\0"
 				VALUE "ProductName", "OrarioPlanner\0"
 				VALUE "ProductVersion", "1.0.0.0\0"

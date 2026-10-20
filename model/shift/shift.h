@@ -14,7 +14,8 @@ public:
         Malattia, // M
         Legge104, // L104
         Corso, // corso di qualsiasi genere
-        Assente // indica il giorno di semplice assenza, è diverso dal riposo e viene indicato da "-"
+        Assente, // indica il giorno di semplice assenza, è diverso dal riposo e viene indicato da "-"
+        Trasferta
     };
 private:
     struct intervalloOrario{

@@ -8,7 +8,7 @@
 #include <QTextTable>
 namespace GUI{
 
-QString PdfExporter::generaHTML(QTableWidget* table,int numeroSettimana,int anno,const QString& note) {
+QString PdfExporter::generaHTML(QTableWidget* table,int numeroSettimana,int anno, const std::tuple<double,double,int>& infoUtili,const QString& note) {
     QString html = R"(
     <!DOCTYPE html>
     <html>
@@ -24,12 +24,26 @@ QString PdfExporter::generaHTML(QTableWidget* table,int numeroSettimana,int anno
                 font-family: Arial, Helvetica, sans-serif;
                 margin: 0;
                 padding: 0;
+                letter-spacing:0.2px;
             }
             .header {
-                text-align: center;
-                margin-bottom: 4px;
-                border-bottom: 2px solid #000000;
-                padding-bottom: 4px;
+                margin-bottom: 0px;
+                border-bottom: 0px solid #000000;
+                padding-bottom: 0px;
+            }
+            .header-left{
+                text-align: left;
+            }
+            .header-right{
+                text-align: right;
+            }
+            .metric-label {
+                font-weight: normal;
+                margin-right: 2px;
+            }
+            .metric-item {
+                display: inline-block;
+                margin-left: 12px;
             }
             h1 {
                 font-size: 8pt;
@@ -38,9 +52,9 @@ QString PdfExporter::generaHTML(QTableWidget* table,int numeroSettimana,int anno
                 letter-spacing: 1px;
                 margin-bottom: 4px;
             }
-            p.subtitle {
+            p.title {
                 font-size: 12pt;
-                margin: 2px 0 0 0;
+                margin: 0 0 0 0;
                 font-weight: bold;
             }
             table {
@@ -87,6 +101,7 @@ QString PdfExporter::generaHTML(QTableWidget* table,int numeroSettimana,int anno
                 border: 1px solid #000000;
                 background-color: #fafafa;
                 font-size: 9.5pt;
+                text-align: left;
                 page-break-inside: avoid !important;
                 break-inside: avoid !important;
             }
@@ -94,14 +109,25 @@ QString PdfExporter::generaHTML(QTableWidget* table,int numeroSettimana,int anno
     </head>
     <body>
         <div class='header'>
-            <p class='subtitle'>ORARI SETTIMANA %1 DEL %2</p>
+            <div class='header-left'>
+                <p class='title'>Orari Settimana %1 del %2</p>
+            </div>
+            <div class='header-right'>
+            <span class="metric-item"><span class="metric-label">Redditività:</span> %3</span>
+            <span class="metric-item"><span class="metric-label">Incasso:</span> %4</span>
+            <span class="metric-item"><span class="metric-label">Ore Totali:</span> %5</span>
+            </div>
         </div>
         <table>
             <thead>
                 <tr>
     )";
+    double Redditivita = std::get<0>(infoUtili);
+    double oreTotali = std::get<1>(infoUtili);
+    QString RedditivitaClean = QString::number(Redditivita, 'f',2);
+    QString OreClean = QString::number(oreTotali, 'f', 2);
 
-    html = html.arg(numeroSettimana).arg(anno);
+    html = html.arg(numeroSettimana).arg(anno).arg(RedditivitaClean).arg(std::get<2>(infoUtili)).arg(OreClean);
 
     int totalCols = table->columnCount();
     int totalRows = table->rowCount();
@@ -148,7 +174,11 @@ QString PdfExporter::generaHTML(QTableWidget* table,int numeroSettimana,int anno
                     cellText.replace('/', "<br>");
                 } else if (cellText.contains('-')) {
                     cellText = "/";
-                } else {
+                }
+                else if(cellText.contains("T:")){
+                    cellText.replace("T:","");
+                }
+                else {
                     cellText.replace("\n", "<br>");
                 }
                 html += QString("<td>%1</td>").arg(cellText);
@@ -174,7 +204,7 @@ QString PdfExporter::generaHTML(QTableWidget* table,int numeroSettimana,int anno
     return html;
 }
 
-bool PdfExporter::esportaOrarioSettimanale(const QString& filePath, QTableWidget* table, int numeroSettimana, int Anno, const QString& note){
+bool PdfExporter::esportaOrarioSettimanale(const QString& filePath, QTableWidget* table, int numeroSettimana, int Anno, const std::tuple<double,double,int> infoUtili, const QString& note){
 if (filePath.isEmpty() || !table) return false;
 
 // Configurazione Printer A4 Landscape
@@ -195,7 +225,7 @@ QRectF pageRect = printer.pageRect(QPrinter::Point);
 doc.setPageSize(pageRect.size());
 
 // Carichiamo l'HTML generato
-doc.setHtml(generaHTML(table, numeroSettimana, Anno, note));
+doc.setHtml(generaHTML(table, numeroSettimana, Anno, infoUtili, note));
 
 // FORZIAMO LA TABELLA AL 100% DELLA LARGHEZZA TRAMITE QT C++ API
 QTextCursor cursor(&doc);

@@ -1,0 +1,61 @@
+name: Build and Upload Inno Setup Release
+
+on:
+  push:
+    tags:
+      - 'v*' # Si attiva su tag come v1.1.0, v1.0.1, ecc.
+
+jobs:
+  build:
+    runs-on: windows-2019 # Oppure windows-latest
+
+    steps:
+      - name: Checkout del codice
+        uses: actions/checkout@v4
+
+      # 1. Configura Qt 5.15
+      - name: Install Qt 5.15.2
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '5.15.2'
+          host: 'windows'
+          target: 'desktop'
+          arch: 'win64_msvc2019_64'
+
+      # 2. Configura l'ambiente MSVC
+      - name: Setup MSVC environment
+        uses: ilammy/msvc-dev-cmd@v1
+
+      # 3. Compila il progetto
+      - name: Build con qmake e nmake
+        run: |
+          mkdir build
+          cd build
+          qmake ..\orarioplanner.pro
+          nmake release
+
+      # 4. Esegui windeployqt
+      - name: Deploy dipendenze Qt
+        run: |
+          windeployqt --release build/release/OrarioPlanner.exe
+
+# 5. Compila l'installer passando dinamicamente il Tag come versione
+      - name: Compile Inno Setup Script
+        shell: pwsh
+        run: |
+          # Estrae il tag di Git (es. "refs/tags/v1.1.0" -> "1.1.0")
+          $TAG_NAME = "${{ github.ref_name }}"
+          $VERSION = $TAG_NAME -replace '^v', ''
+
+          Write-Host "Compilazione Installer per versione: $VERSION"
+
+          # Esegue Inno Setup passando il parametro /DMyAppVersion
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion="$VERSION" OrarioPlannerSetup.iss
+
+      # 6. Carica l'installer generato sulla Release
+      - name: Upload Installer to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: Output/*.exe # O il percorso relativo della cartella Output definita nel tuo .iss
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,3 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        *{
+            font-size: 12pt;
+            font-family: Arial, Helvetica, sans-serif;
+        };
+        h1{
+            font-size: 18pt;
+        };
+        h2{
+            font-size: 16pt;
+        };
+        h3{
+            font-size: 14pt;
+        };
+    </style>
+</head>
+<body>
 <h1>Guida all'uso di OrarioPlanner</h1>
 <p>
     L'applicazione permette di pianificare la copertura oraria settimanale del punto vendita garantendo il rispetto dei vincoli aziendali rendendo
@@ -21,6 +41,7 @@
         <li>Malattia: semplicemente la lettera M</li>
         <li>Legge 104: semplicemente la stringa 104</li>
         <li>Corso: semplicemente la stringa CORSO</li>
+        <li>Trasferta: si compone usando come primi 2 caratteri T: e successivamente il nome del comune, esempio: T: PADOVA</li>
         <li>Assenza generica: si usa un semplice trattino -, può anche essere impostato a seguito di formattazione errata inserita dall'utente oppure se la cella viene lasciata vuota</li>
     </ul>
     E' da notare che la formattazione che viene usata durante la modifica della cella non rispecchia la formattazione che si vedrà nella cella successivamente, questo per dire
@@ -75,8 +96,8 @@
     </ul>
     Una volta premuto il tasto si può visualizzare, subito sotto il pulsante, l'esito della validazione della tabella:
     <ul>
-        <li><div style='color: #00d80a;'>Regolare</div>: la tabella non presenta anomalie</li>
-        <li><div style='color: #ffd400;'>In attesa di verifica</div>: stato tabella ignoto, lo stato diventa ignoto ad ogni modifica che comporta un cambiamento delle ore totali (come l'aggiunta di un turno),
+        <li><div style='color: #008A07;'>Regolare</div>: la tabella non presenta anomalie</li>
+        <li><div style='color: #C49000;'>In attesa di verifica</div>: stato tabella ignoto, lo stato diventa ignoto ad ogni modifica che comporta un cambiamento delle ore totali (come l'aggiunta di un turno),
         è necessario quindi effettuare un nuovo controllo d'integrità</li>
         <li><div style='color: #e80000;'>Errore integrità</div>: un'anomalia è stata trovata, viene segnato il giorno critico di rosso nella tabella e sotto l'indicatore di stato si hanno informazioni aggiuntive
         quali il tipo di anomalia, il giorno e dove disponibile la mezz'ora anomala.</li>
@@ -109,3 +130,5 @@
     Per qualsiasi segnalazione di problemi o consigli per aggiunte resto disponibile alla casella di posta:
     <a href="mailto:samuele.gobbi3@gmail.com">samuele.gobbi3@gmail.com</a>
 </p>
+</body>
+</html>

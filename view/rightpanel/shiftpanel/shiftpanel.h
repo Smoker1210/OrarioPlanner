@@ -48,6 +48,7 @@ signals:
     //chiamato quando viene ridisegnata la tabella (quindi per un'aggiunta o rimozione dipendente)
     void requestEmptyAnomalies();
     void checkIfEmployeeIsEmpty();
+    void requestInfoUtili(std::tuple<double,double,int>&);
 };
 
 } // namespace GUI

@@ -61,6 +61,12 @@ rightpanel::rightpanel(const shiftplanner::shiftManager& gestore,QWidget* parent
     connect(pageOrari, &shiftPanel::requestSettimanaAnnoPair, this, [this](std::pair<int,int>& settimanaAnno){
         settimanaAnno = manager.getConfig().getCoppiaSettimanaAnno();
     });
+    connect(pageOrari, &shiftPanel::requestInfoUtili, this, [this](std::tuple<double,double,int>& infoUtili){
+        const shiftplanner::shopConfig& config = this->manager.getConfig();
+        double redd = 0;
+        config.getMaxOre()>0? redd=config.getIncasso()/config.getMaxOre():redd=0;
+        infoUtili = {redd,manager.calcolaOreTotali(), config.getIncasso()};
+    });
     connect(pageOrari, &shiftPanel::sendUpdatedNotes, this, &rightpanel::sendUpdatedNotes);
     connect(pageOrari, &shiftPanel::requestEmptyAnomalies, this, &rightpanel::requestEmptyAnomalies);
     //helpPanel

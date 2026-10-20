@@ -261,11 +261,13 @@ bool shiftPanel::eventFilter(QObject* watched, QEvent* event){
 void shiftPanel::onExportPressed(){
     std::pair<int,int> settimanaAnno = {0,0};
     emit this->requestSettimanaAnnoPair(settimanaAnno);
+    std::tuple<double, double, int> infoUtili = {0,0,0};
+    emit this->requestInfoUtili(infoUtili);
     QString defaultName = QString("Orario_Settimana_%1_%2.pdf").arg(settimanaAnno.first).arg(settimanaAnno.second);
     QString fileName = QFileDialog::getSaveFileName(this, "Esportazione Orario in PDF", defaultName, "Documenti PDF (*.pdf)");
     if(fileName.isEmpty()) return;
     QString testoNote = nota->text();
-    bool successo = PdfExporter::esportaOrarioSettimanale(fileName, shiftTable, settimanaAnno.first, settimanaAnno.second, testoNote);
+    bool successo = PdfExporter::esportaOrarioSettimanale(fileName, shiftTable, settimanaAnno.first, settimanaAnno.second, infoUtili, testoNote);
     if(successo){
         QMessageBox::information(this, "Esportazione avvenuta con successo", "il file PDF è stato salvato con successo!");
     } else{

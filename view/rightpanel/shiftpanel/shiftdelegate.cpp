@@ -15,6 +15,10 @@ QString ShiftDelegate::displayText(const QVariant& value, const QLocale& locale)
     if(testoRaw.contains('-')){
         return "/";
     }
+    if(testoRaw.contains("T:")){
+        QStringList parti = testoRaw.split(':');
+        return parti[1];
+    }
     return testoRaw;
 }
 QWidget* ShiftDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const{

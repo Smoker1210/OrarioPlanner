@@ -12,6 +12,11 @@ class leftpanel : public QWidget
 {
     Q_OBJECT
 private:
+    //colori
+    QString hexRegolare = "#008A07";
+    QString hexAttesaVerifica = "#B38F00";
+    QString hexErrore = "#e80000";
+    //
     QWidget* info;
     void setupInfo();
     void setupBottomRow(QHBoxLayout* layout);
