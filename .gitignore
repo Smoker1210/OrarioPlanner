@@ -9,8 +9,6 @@
 build/
 debug/
 release/
-v1.0.0.0/
-v1.1.0/
 .qmake.stash
 
 # File generati da QMake / Make

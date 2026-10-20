@@ -60,16 +60,16 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "{#AppIcon}"; DestDir: "{app}"; Flags: ignoreversion
 
 ; 2. Copia del contenuto della ReleaseApp (incluso OrarioPlanner.exe e tutte le DLL)
-Source: "{#SourceFolder}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#SourceFolder}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.obj, *.cpp.obj, *.h.obj, *.moc, *.o"
 
 [Icons]
-; Menu Start (Punta direttamente al file app_icon.ico copiato per massima nitidezza)
+; Menu Start
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\{#AppIcon}"
 
 ; Disinstallatore
 Name: "{autoprograms}\Disinstalla {#MyAppName}"; Filename: "{uninstallexe}"
 
-; Desktop (Punta direttamente al file app_icon.ico copiato)
+; Desktop
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\{#AppIcon}"; Tasks: desktopicon
 
 [Run]
