@@ -7,7 +7,7 @@ rightpanel::rightpanel(const shiftplanner::shiftManager& gestore,QWidget* parent
     QVBoxLayout* layoutPrincipale = new QVBoxLayout(this);
     stackDestro = new QStackedWidget(this);
     //page 0 - tabella orari
-    pageOrari = new shiftPanel(manager.getGrid(),stackDestro);
+    pageOrari = new shiftPanel(manager.getGrid(),manager.getListaDip(),stackDestro);
     stackDestro->addWidget(pageOrari);
     //page 1 - schermata dipendenti
     pageDipendenti = new employeePanel(stackDestro);

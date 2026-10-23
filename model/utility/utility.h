@@ -14,7 +14,7 @@ namespace shiftplanner{
         std::string extractSurnameFromKey(const std::string& key);
         std::string intToGiorno(int giorno);
         void cleanBlocco(std::string& blocco);
-        //NON FUNZIONA | utility che rimuove zeri non necessari dopo il punto di divisione ore.minuti
+        //Utility che rimuove valori di minuti vuoti come xx.00 xx.0 o xx.
         void cleanBloccoOrari(std::string& orario);
     }
 }

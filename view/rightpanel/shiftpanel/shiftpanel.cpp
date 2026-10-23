@@ -14,7 +14,7 @@
 
 namespace GUI {
 
-shiftPanel::shiftPanel(const std::map<std::string, std::array<shiftplanner::shift,7>>& grid, QWidget *parent): QWidget{parent}, gridShift(grid){
+shiftPanel::shiftPanel(const std::map<std::string, std::array<shiftplanner::shift,7>>& grid, const std::vector<shiftplanner::employee>& listaDip, QWidget *parent): QWidget{parent}, gridShift(grid), listaDipendenti(listaDip){
     criticalDays.fill(false);
     QVBoxLayout* layoutPrincipale = new QVBoxLayout(this);
     shiftTable = new QTableWidget(gridShift.size(), 9,this);
@@ -68,6 +68,64 @@ void shiftPanel::clearEmployeeSelection(){
     shiftTable->setCurrentIndex(QModelIndex());
 }
 
+// funzione di refresh che pone la tabella in ordine alfabetico
+// void shiftPanel::refreshTable(){
+//     int i = 0;
+//     double sumOre = 0;
+//     shiftTable->blockSignals(true);
+//     shiftTable->setRowCount(0);
+//     shiftTable->setRowCount(gridShift.size());
+//     //implemento la logica che differenzia il nominativo di due persone con stesso nome inserendoci il cognome
+//     //essenzialmente do una prima ciclata dei dipendenti attivi con una mappa e poi controllo per il nome se ci sono doppioni, una specie di counting sort
+//     std::unordered_map<std::string, int> frequenzaNomi;
+//     for(const auto& pair : gridShift){
+//         bool attivo = false;
+//         emit this->requestAttivoBool(pair.first, &attivo);
+//         if(!attivo) continue;
+//         frequenzaNomi[shiftplanner::utility::extractNameFromKey(pair.first)]++;
+//     }
+//     for(const auto& pair : gridShift){
+//         bool attivo = false;
+//         emit this->requestAttivoBool(pair.first, &attivo);  //chiedo al rightpanel il bool attivo della key corrispondente, se false skippo completamente il dipendente
+//         if(!attivo){
+//             continue;
+//         }
+//         bool catProtetta = false;
+//         emit this->requestCatProtettaBool(pair.first, &catProtetta); //chiedo al rightpanel il bool categoriaProtetta della key corrispondente, se true dimezzo le ore dei turni
+//         QString nomeMostrato = QString::fromStdString(shiftplanner::utility::extractNameFromKey(pair.first));
+//         if(frequenzaNomi[nomeMostrato.toStdString()] > 1){
+//             nomeMostrato = QString::fromStdString(nomeMostrato.toStdString() + "/" + shiftplanner::utility::extractSurnameFromKey(pair.first));
+//         }
+//         QTableWidgetItem* itemDipendente = new QTableWidgetItem(nomeMostrato);
+//         itemDipendente->setData(Qt::UserRole, QString::fromStdString(pair.first));
+//         itemDipendente->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+//         itemDipendente->setFlags(itemDipendente->flags() & ~Qt::ItemIsEditable);
+//         itemDipendente->setBackground(QBrush(Qt::transparent));
+//         shiftTable->setItem(i,0,itemDipendente);
+//         const std::array<shiftplanner::shift,7>& turni = pair.second;
+//         int j=1;
+//         for(const auto& turno : turni){
+//             QTableWidgetItem* itemTurno = new QTableWidgetItem(QString::fromStdString(turno.getTesto()));
+//             sumOre += turno.oreTotali();
+//             itemTurno->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable);
+//             itemTurno->setBackground(QBrush(Qt::transparent));
+//             itemTurno->setTextAlignment(Qt::AlignCenter);
+//             shiftTable->setItem(i,j,itemTurno);
+//             j++;
+//         }
+//         if(catProtetta) sumOre = sumOre/2;
+//         QTableWidgetItem* itemOre = new QTableWidgetItem(QString::number(sumOre));
+//         itemOre->setTextAlignment(Qt::AlignCenter);
+//         shiftTable->setItem(i,8,itemOre);
+//         sumOre=0;
+//         i++;
+//     }
+//     shiftTable->setRowCount(i);
+//     shiftTable->blockSignals(false);
+//     emit this->requestEmptyAnomalies();
+//     emit this->checkIfEmployeeIsEmpty();
+// }
+
 void shiftPanel::refreshTable(){
     int i = 0;
     double sumOre = 0;
@@ -83,25 +141,22 @@ void shiftPanel::refreshTable(){
         if(!attivo) continue;
         frequenzaNomi[shiftplanner::utility::extractNameFromKey(pair.first)]++;
     }
-    for(const auto& pair : gridShift){
-        bool attivo = false;
-        emit this->requestAttivoBool(pair.first, &attivo);  //chiedo al rightpanel il bool attivo della key corrispondente, se false skippo completamente il dipendente
-        if(!attivo){
+    for(const auto& dip : listaDipendenti){
+        if(!dip.isAttivo()){
             continue;
         }
-        bool catProtetta = false;
-        emit this->requestCatProtettaBool(pair.first, &catProtetta); //chiedo al rightpanel il bool categoriaProtetta della key corrispondente, se true dimezzo le ore dei turni
-        QString nomeMostrato = QString::fromStdString(shiftplanner::utility::extractNameFromKey(pair.first));
+        QString nomeMostrato = QString::fromStdString(dip.getNome());
         if(frequenzaNomi[nomeMostrato.toStdString()] > 1){
-            nomeMostrato = QString::fromStdString(nomeMostrato.toStdString() + "/" + shiftplanner::utility::extractSurnameFromKey(pair.first));
+            nomeMostrato = QString::fromStdString(nomeMostrato.toStdString() + "/" + dip.getCognome());
         }
         QTableWidgetItem* itemDipendente = new QTableWidgetItem(nomeMostrato);
-        itemDipendente->setData(Qt::UserRole, QString::fromStdString(pair.first));
+        itemDipendente->setData(Qt::UserRole, QString::fromStdString(dip.getKey()));
         itemDipendente->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
         itemDipendente->setFlags(itemDipendente->flags() & ~Qt::ItemIsEditable);
         itemDipendente->setBackground(QBrush(Qt::transparent));
         shiftTable->setItem(i,0,itemDipendente);
-        const std::array<shiftplanner::shift,7>& turni = pair.second;
+        const auto& pair = gridShift.find(dip.getKey());
+        const std::array<shiftplanner::shift,7>& turni = pair->second;
         int j=1;
         for(const auto& turno : turni){
             QTableWidgetItem* itemTurno = new QTableWidgetItem(QString::fromStdString(turno.getTesto()));
@@ -112,7 +167,7 @@ void shiftPanel::refreshTable(){
             shiftTable->setItem(i,j,itemTurno);
             j++;
         }
-        if(catProtetta) sumOre = sumOre/2;
+        if(dip.isCategoriaProtetta()) sumOre = sumOre/2;
         QTableWidgetItem* itemOre = new QTableWidgetItem(QString::number(sumOre));
         itemOre->setTextAlignment(Qt::AlignCenter);
         shiftTable->setItem(i,8,itemOre);

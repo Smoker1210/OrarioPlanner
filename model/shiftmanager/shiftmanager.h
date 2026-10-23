@@ -16,6 +16,7 @@ namespace shiftplanner{
             std::map<std::string, std::array<shift,7>> gridTurni;
             shopConfig orariSettimanali;
             std::vector<std::unique_ptr<GenericRule>> regoleFailsafe;
+            std::vector<const std::string*> sortedKeys;
         public:
             shiftManager();
             void aggiungiDipendente(const employee&);
@@ -41,6 +42,7 @@ namespace shiftplanner{
             const std::map<std::string, std::array<shift,7>>& getGrid() const;
             void sortList();
             int countActiveEmployees() const;
+            const std::vector<employee>& getListaDip() const;
     };
 }
 
