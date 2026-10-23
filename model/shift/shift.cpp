@@ -108,7 +108,17 @@ namespace shiftplanner{
             return result;
         }
         if (cleanText.length()>2 && cleanText.substr(0,2) == "T:"){
+            std::string innerText = cleanText.substr(2);
+            innerText = utility::cleanString(innerText);
+            bool allspazi = std::all_of(innerText.begin(), innerText.end(), [](unsigned char c){return std::isspace(c);});
+            bool contieneCifre = std::any_of(innerText.begin(), innerText.end(), [](unsigned char c){return std::isdigit(c);});
+            //controlliamo che la stringa sede che viene indicata nella trasferta non sia vuota, contenga solo spazi o contenga numeri
+            bool isValid = (!innerText.empty() && !allspazi && !contieneCifre);
+            if(isValid){
             result.setAssenza(Tipo::Trasferta, cleanText);
+            } else{
+                result.setAssenza(Tipo::Assente, "-");
+            }
             return result;
         }
         //nel caso non sia un giorno di assenza allora gestisco il caso per lo spezzato o per il continuato
@@ -124,8 +134,13 @@ namespace shiftplanner{
             bool primoValido = (ini1 != 0 || fin1 != 0 || valid1);
             bool secondoValido = (ini2 != 0 || fin2 != 0 || valid2);
             if(primoValido && secondoValido){
-            result.setSpezzato(ini1, fin1, ini2, fin2, cleanText);
-            return result;
+                utility::cleanBloccoOrari(primoBlocco);
+                utility::cleanBloccoOrari(secondoBlocco);
+                if(!primoBlocco.empty() && !secondoBlocco.empty()){
+                    cleanText = primoBlocco + " / " + secondoBlocco;
+                }
+                result.setSpezzato(ini1, fin1, ini2, fin2, cleanText);
+                return result;
             }
             result.setAssenza(Tipo::Assente, "-");
             return result;
@@ -135,7 +150,8 @@ namespace shiftplanner{
         if(!orariValidi){
             result.setAssenza(Tipo::Assente, "-");
         } else{
-        result.setContinuato(ini,fin, cleanText);
+            utility::cleanBloccoOrari(cleanText);
+            result.setContinuato(ini,fin, cleanText);
         }
 
         return result;

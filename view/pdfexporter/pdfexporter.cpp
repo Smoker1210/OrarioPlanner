@@ -121,7 +121,7 @@ QString PdfExporter::generaHTML(QTableWidget* table,int numeroSettimana,int anno
         <table>
             <thead>
                 <tr>
-    )";
+)";
     double Redditivita = std::get<0>(infoUtili);
     double oreTotali = std::get<1>(infoUtili);
     QString RedditivitaClean = QString::number(Redditivita, 'f',2);

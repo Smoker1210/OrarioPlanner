@@ -15,15 +15,15 @@ class shiftPanel : public QWidget
     Q_OBJECT
 private:
     const std::map<std::string, std::array<shiftplanner::shift,7>>& gridShift;
+    const std::vector<shiftplanner::employee>& listaDipendenti;
     QTableWidget* shiftTable;
-    // segna il giorno critico che presenta un'anomalia d'integrità(1 a 7), se è uguale a -1 non ci sono anomalie
     std::array<bool,7> criticalDays;
     QLineEdit* nota;
     QPushButton* ExportButton;
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
 public:
-    explicit shiftPanel(const std::map<std::string, std::array<shiftplanner::shift,7>>& grid,QWidget *parent = nullptr);
+    explicit shiftPanel(const std::map<std::string, std::array<shiftplanner::shift,7>>& grid, const std::vector<shiftplanner::employee>& listaDipendenti, QWidget *parent = nullptr);
     static QDate getLunediDaSettimana(int settimana, int anno);
 
 public slots:

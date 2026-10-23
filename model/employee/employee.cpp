@@ -69,4 +69,20 @@ namespace shiftplanner {
     bool employee::isAttivo() const{
         return attivo;
     }
+
+    int employee::getRolePriority(const std::string& nomeRuolo){
+        ruolo role = employee::toRuolo(nomeRuolo);
+        switch(role){
+            case ruolo::responsabile:
+                return 1;
+            case ruolo::viceresponsabile:
+                return 2;
+            case ruolo::fiducia:
+                return 3;
+            case ruolo::addetto:
+                return 4;
+            default:
+                return 99;
+        }
+    }
 }
