@@ -35,7 +35,6 @@ class employee{
     bool isCategoriaProtetta() const;
     void setAttivo(bool value);
     bool isAttivo() const;
-    static int getRolePriority(const std::string& nomeRuolo);
 };
 }
 #endif

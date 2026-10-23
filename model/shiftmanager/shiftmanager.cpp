@@ -131,44 +131,22 @@ namespace shiftplanner{
             const std::map<std::string, std::array<shift,7>>& shiftManager::getGrid() const{
                 return gridTurni;
             }
-            // ORDINE ALFABETICO , per ora commento, prima o poi potrei lasciare l'opzione di scegliere l'ordinamento
-            // void shiftManager::sortList() {
-            //     std::sort(DipendentiAttivi.begin(), DipendentiAttivi.end(), [](const auto& a, const auto& b) {
-            //         // Estraiamo il nome dai due oggetti/puntatori dipendente
-            //         const std::string& nomeA = a.getNome();
-            //         const std::string& nomeB = b.getNome();
-
-            //         // Confrontiamo in modo case-insensitive
-            //         return std::lexicographical_compare(
-            //             nomeA.begin(), nomeA.end(),
-            //             nomeB.begin(), nomeB.end(),
-            //             [](unsigned char c1, unsigned char c2) {
-            //                 return std::tolower(c1) < std::tolower(c2);
-            //             }
-            //             );
-            //     });
-            // }
-
             void shiftManager::sortList() {
-            std::sort(DipendentiAttivi.begin(), DipendentiAttivi.end(), [](const employee& a, const employee& b) {
-                int priorityA = employee::getRolePriority(a.getRuolo());
-                int priorityB = employee::getRolePriority(b.getRuolo());
+                std::sort(DipendentiAttivi.begin(), DipendentiAttivi.end(), [](const auto& a, const auto& b) {
+                    // Estraiamo il nome dai due oggetti/puntatori dipendente
+                    const std::string& nomeA = a.getNome();
+                    const std::string& nomeB = b.getNome();
 
-                // Ordina per ruolo (priorità crescente: 1 -> 2 -> 3 -> 4)
-                if (priorityA != priorityB) {
-                    return priorityA < priorityB;
-                }
-
-                // A parità di ruolo, ordina per ore di contratto decrescenti
-                if (a.getOreSett() != b.getOreSett()) {
-                    return a.getOreSett() > b.getOreSett();
-                }
-
-                // A parità di ore, ordina alfabeticamente per nome
-                return a.getNome() < b.getNome();
+                    // Confrontiamo in modo case-insensitive
+                    return std::lexicographical_compare(
+                        nomeA.begin(), nomeA.end(),
+                        nomeB.begin(), nomeB.end(),
+                        [](unsigned char c1, unsigned char c2) {
+                            return std::tolower(c1) < std::tolower(c2);
+                        }
+                        );
                 });
             }
-
             int shiftManager::countActiveEmployees() const{
                 int contatore=0;
                 for(const auto& dip : DipendentiAttivi){
@@ -177,9 +155,5 @@ namespace shiftplanner{
                     }
                 }
                 return contatore;
-            }
-
-            const std::vector<employee>& shiftManager::getListaDip() const{
-                return DipendentiAttivi;
             }
 }

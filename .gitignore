@@ -16,5 +16,4 @@ Makefile*
 
 # Appunti personali e bozze grafiche (opzionale)
 *.paint
-release_info.txt
 *.text

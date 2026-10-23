@@ -1,6 +1,4 @@
 #include "utility.h"
-#include "qdebug.h"
-#include "qglobal.h"
 #include <sstream>
 #include <tuple>
 
@@ -87,17 +85,15 @@ namespace shiftplanner{
         }
         void cleanBloccoOrari(std::string& orario){
             std::stringstream ss(orario);
-            std::string blocco1, blocco2, risultato;
+            std::string blocco, risultato;
 
-            while (ss >> blocco1 >> blocco2) {
-                cleanBlocco(blocco1);
-                cleanBlocco(blocco2);
-                if(!blocco1.empty() && !blocco2.empty()){
-                risultato = blocco1 + " " + blocco2;
-                }
+            while (ss >> orario) {
+                cleanBlocco(blocco);
+                if (!risultato.empty()) risultato += " ";
+                risultato += orario;
             }
-            if(!risultato.empty())
-                orario = risultato;
+
+            blocco = risultato;
         }
         void cleanBlocco(std::string& blocco){
             try{
